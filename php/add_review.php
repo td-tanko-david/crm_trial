@@ -24,6 +24,7 @@
 				$Adminpass = "crm_trial";
 				$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8mb4', $Adminuser, $Adminpass);
 				
+				// Use prepare and bindParam functions to avoid SQL Injection
 				// Insert the User into the DB
 				$query = $db->prepare("insert into Users (UserName) VALUES (:UserName);");
 				$query->bindParam(':UserName',$currUserName);
