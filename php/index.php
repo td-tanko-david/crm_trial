@@ -14,13 +14,12 @@
 <body>
     <div class="container theme-showcase" role="main">
 	
-	<div class="jumbotron">
-		<h1>Welcome to Generic E-Shop</h1>
-	</div>
-		<section id="description">	
+		<div class="jumbotron">
+			<h1>Welcome to Generic E-Shop</h1>
+		</div>
 		
-			<div id="desc_text">
-			
+		<section id="description">			
+			<div id="desc_text">			
 				<h3>About us</h3>
 				<p>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et imperdiet dolor, nec aliquam urna. Praesent feugiat libero sit amet congue pellentesque. Praesent dictum, elit porta pretium cursus, nulla est aliquam arcu, sed tempus magna est eu eros. In sed elit bibendum, laoreet velit posuere.
@@ -31,55 +30,53 @@
 					<li>Address: Standard st. 5, Default city</li>
 					<li>Email: ouremail@generic.com</li>
 					<li>Phone number: 0021CALLUSHERE</li>
-				</ul>
-				
-			</div>
-			
+				</ul>				
+			</div>			
 			<figure>
 				<img src="eshop.png" id="desc_img">
-			</figure>
-			
+			</figure>			
 		</section>
 		
 		<section id="reviews" >	
-			<h1>Reviews</h1>
-			
+			<h1>Reviews</h1>			
 			<?php
-			try{
-				$Adminuser = "crm_trial";
-				$Adminpass = "crm_trial";
-				$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8mb4', $Adminuser, $Adminpass);
-				
-				$query = $db->prepare("SELECT UserName,ReviewText,ReviewRating FROM Comments c,Users u WHERE c.UserID=u.UserID" );
-				$query->execute();
-				$result = $query->fetchAll();
-				
-				foreach($result as $row){
-					$currName=$row['UserName'];
-					$currReview=$row['ReviewText'];
-					$currRating=$row['ReviewRating'];
+				try{
+					// Connect to DB
+					$Adminuser = "crm_trial";
+					$Adminpass = "crm_trial";
+					$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8mb4', $Adminuser, $Adminpass);
 					
-					echo '<div class="well" >';
-					echo '<h3>'.$currName.'</h3>';
-					echo '<p class="ReviewText">';
-					echo $currReview;
-					echo '</p>';
-					echo '<div class="ReviewRating">';
-					echo 'Review rating: ' . $currRating . '/5';
-					echo '</div>';
-					echo '</div>';
-				}				
-			} catch(PDOException $ex) {
-				print($ex->getMessage());
-			}
+					// Get all the reviews and the corresponging usernames from the tables Comments and Users
+					$query = $db->prepare("SELECT UserName,ReviewText,ReviewRating FROM Comments c,Users u WHERE c.UserID=u.UserID" );
+					$query->execute();
+					$result = $query->fetchAll();
+					
+					// Display each review
+					foreach($result as $row){
+						$currName=$row['UserName'];
+						$currReview=$row['ReviewText'];
+						$currRating=$row['ReviewRating'];
+						
+						echo '<div class="well" >';
+						echo '<h3>'.$currName.'</h3>';
+						echo '<p class="ReviewText">';
+						echo $currReview;
+						echo '</p>';
+						echo '<div class="ReviewRating">';
+						echo 'Review rating: ' . $currRating . '/5';
+						echo '</div>';
+						echo '</div>';
+					}				
+				} catch(PDOException $ex) {
+					print($ex->getMessage());
+				}
 			?>	
-
 			<div>
 				<form action="add_review.php" method="POST">
 					<p>Enter your name:</p> 
 					<input type="text" name="username"></input>
 					<p>Enter your review:</p> 
-					<textarea type="text" name="userreview"></textarea>
+					<textarea type="text" name="userreview" maxlength="255"></textarea>
 					<p>Select your rating:</p> 
 					<p>
 					<select type="text" name="userrating">
@@ -97,6 +94,8 @@
 			</div>			
 		</section>
 	</div>
+	
+	
 	<!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

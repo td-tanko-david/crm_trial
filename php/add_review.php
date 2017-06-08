@@ -11,21 +11,25 @@
 
 <body>
     <div class="container theme-showcase" role="main">
-	<?php 		
+	<?php
+		// Store the passed values
 		$currUserName = $_POST['username'];
 		$currUserReview = $_POST['userreview'];
 		$currUserRating = $_POST['userrating'];
 			
 		if (!($currUserName === '') && !($currUserReview === '') && !($currUserRating === '')){
 			try{
+				// Connect to DB
 				$Adminuser = "crm_trial";
 				$Adminpass = "crm_trial";
 				$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8mb4', $Adminuser, $Adminpass);
 				
+				// Insert the User into the DB
 				$query = $db->prepare("insert into Users (UserName) VALUES (:UserName);");
 				$query->bindParam(':UserName',$currUserName);
 				$query->execute();
 				
+				// Insert the Review in the DB
 				$query = $db->prepare("insert into Comments (UserID,ReviewText,ReviewRating) VALUES ((SELECT UserID FROM Users where UserName=:UserName),:UserReview,:UserRating);" );
 				$query->bindParam(':UserName',$currUserName);
 				$query->bindParam(':UserReview',$currUserReview);
@@ -35,9 +39,11 @@
 				echo "<p>Thank you for sharing Your opinion. Redirecting...</p>";
 			} catch(\PDOException $ex){
 				print($ex->getMessage());
-			}
+			}			
+			// Redirect to Home page after successful input.
 			echo "<script type=\"text/JavaScript\"> setTimeout(\"window.location.assign('index.php');\",2500); </script>";
-		} else {
+		} else {			
+			// Redirect to Home page after failed input.
 			echo "<p class='well'>The data entered is not valid. Redirecting...</p>";
 			echo "<script type=\"text/JavaScript\"> setTimeout(\"window.location.assign('index.php');\",1500); </script>";
 		}
