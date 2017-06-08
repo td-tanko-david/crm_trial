@@ -1,0 +1,5 @@
+insert into Users (UserName,UserRole) VALUES ('testuser','Admin');
+insert into Users (UserName,UserRole) VALUES ('testuser_two','User');
+
+insert into comments (UserID,ReviewText,ReviewRating) VALUES ((SELECT UserID FROM users where UserName='testuser'),'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis commodo justo ac augue ultrices, id finibus ipsum. Suspendisse sagittis cursus rhoncus. Praesent ultrices luctus quam sed eleifend. Curabitur pharetra efficitur nisl at orci aliquam.',2);
+insert into comments (UserID,ReviewText,ReviewRating) VALUES ((SELECT UserID FROM users where UserName='testuser_two'),'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris euismod tortor non elementum blandit. Etiam finibus tristique sem, at efficitur felis mattis sed. Phasellus egestas libero in risus.',5);

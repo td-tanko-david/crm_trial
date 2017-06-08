@@ -1,0 +1,27 @@
+#desc_text{
+	float: left;
+	margin: 10px;
+	width: 40%;
+}
+
+#desc_img{
+	float: right;
+	margin: 10px;
+	width: 40%;
+}
+
+
+#description {
+	overflow: hidden;
+}
+
+#reviews {
+	clear: both;
+	margin-top: 5px;
+}
+
+.Review{
+	margin: 5px;
+	padding: 5px;
+	border: 1px dotted black;
+}
