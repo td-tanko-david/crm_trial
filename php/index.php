@@ -45,11 +45,11 @@
 			<h1>Reviews</h1>
 			
 			<?php
-				$Adminuser = "root";
-				$Adminpass = "";
+				$Adminuser = "crm_trial";
+				$Adminpass = "crm_trial";
 				$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8', $Adminuser, $Adminpass);
 				
-				$query = $db->prepare("SELECT UserName,ReviewText,ReviewRating FROM comments c,users u WHERE c.UserID=u.UserID" );
+				$query = $db->prepare("SELECT UserName,ReviewText,ReviewRating FROM Comments c,Users u WHERE c.UserID=u.UserID" );
 				$query->execute();
 				$result = $query->fetchAll();
 				
