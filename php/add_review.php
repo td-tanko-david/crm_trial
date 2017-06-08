@@ -11,27 +11,31 @@
 
 <body>
     <div class="container theme-showcase" role="main">
-	<?php 
-		$Adminuser = "crm_trial";
-		$Adminpass = "crm_trial";
-		$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8', $Adminuser, $Adminpass);
-		
+	<?php 		
 		$currUserName = $_POST['username'];
 		$currUserReview = $_POST['userreview'];
 		$currUserRating = $_POST['userrating'];
 			
 		if (!($currUserName === '') && !($currUserReview === '') && !($currUserRating === '')){
-			$query = $db->prepare("insert into Users (UserName) VALUES (:UserName);");
-			$query->bindParam(':UserName',$currUserName);
-			$query->execute();
+			try{
+				$Adminuser = "crm_trial";
+				$Adminpass = "crm_trial";
+				$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8mb4', $Adminuser, $Adminpass);
+				
+				$query = $db->prepare("insert into Users (UserName) VALUES (:UserName);");
+				$query->bindParam(':UserName',$currUserName);
+				$query->execute();
+				
+				$query = $db->prepare("insert into Comments (UserID,ReviewText,ReviewRating) VALUES ((SELECT UserID FROM Users where UserName=:UserName),:UserReview,:UserRating);" );
+				$query->bindParam(':UserName',$currUserName);
+				$query->bindParam(':UserReview',$currUserReview);
+				$query->bindParam(':UserRating',$currUserRating);
+				$query->execute();
 			
-			$query = $db->prepare("insert into Comments (UserID,ReviewText,ReviewRating) VALUES ((SELECT UserID FROM Users where UserName=:UserName),:UserReview,:UserRating);" );
-			$query->bindParam(':UserName',$currUserName);
-			$query->bindParam(':UserReview',$currUserReview);
-			$query->bindParam(':UserRating',$currUserRating);
-			$query->execute();
-			
-			echo "<p>Thank you for sharing Your opinion. Redirecting...</p>";
+				echo "<p>Thank you for sharing Your opinion. Redirecting...</p>";
+			} catch(\PDOException $ex){
+				print($ex->getMessage());
+			}
 			echo "<script type=\"text/JavaScript\"> setTimeout(\"window.location.assign('index.php');\",2500); </script>";
 		} else {
 			echo "<p class='well'>The data entered is not valid. Redirecting...</p>";

@@ -45,9 +45,10 @@
 			<h1>Reviews</h1>
 			
 			<?php
+			try{
 				$Adminuser = "crm_trial";
 				$Adminpass = "crm_trial";
-				$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8', $Adminuser, $Adminpass);
+				$db = new PDO('mysql:host=localhost;dbname=crm_trial;charset=utf8mb4', $Adminuser, $Adminpass);
 				
 				$query = $db->prepare("SELECT UserName,ReviewText,ReviewRating FROM Comments c,Users u WHERE c.UserID=u.UserID" );
 				$query->execute();
@@ -68,6 +69,9 @@
 					echo '</div>';
 					echo '</div>';
 				}				
+			} catch(PDOException $ex) {
+				print($ex->getMessage());
+			}
 			?>	
 
 			<div>
